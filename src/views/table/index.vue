@@ -1,5 +1,7 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" @click="addData">添加</el-button>
+
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='ID' width="95">
         <template slot-scope="scope">
@@ -33,17 +35,22 @@
         </template>
       </el-table-column>
     </el-table>
+   <!-- v-bind:dialogFormVisible="showForm" -->
+    <excel :dialogFormVisible.sync="showForm"></excel>
+
   </div>
 </template>
 
 <script>
 import { getList } from '@/api/table'
+import excel from '../excel/exportExcel';
 
 export default {
   data() {
     return {
       list: null,
-      listLoading: true
+      listLoading: true,
+      showForm: false
     }
   },
   filters: {
@@ -67,7 +74,12 @@ export default {
         this.list = response.data.items
         this.listLoading = false
       })
+    },
+    addData () {
+      // console.log(this.showForm);
+      this.showForm = true
     }
-  }
+  },
+  components: {excel}
 }
 </script>

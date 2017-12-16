@@ -7,3 +7,11 @@ export function getList(params) {
     params
   })
 }
+
+export function addData(params) {
+  return request({
+    url: '/table/add',
+    method: 'post',
+    data: params
+  })
+}

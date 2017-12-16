@@ -1,5 +1,10 @@
 import { login, logout, getInfo } from '@/api/login'
+import { addData } from '@/api/table'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+// import { Promise } from 'mongoose'
+// import { resolve } from 'url'
+// import { reject } from './C:/Users/Administrator/AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/async'
+// import { error } from 'util'
 
 const user = {
   state: {
@@ -45,6 +50,8 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo(state.token).then(response => {
+          console.log(response)
+          console.log(process.env.BASE_API)
           const data = response.data
           commit('SET_ROLES', data.role)
           commit('SET_NAME', data.name)
@@ -76,6 +83,20 @@ const user = {
         commit('SET_TOKEN', '')
         removeToken()
         resolve()
+      })
+    },
+
+    // 添加数据
+    AddData({ commit, state }, param) {
+      return new Promise((resolve, reject) => {
+        addData(param).then(response => {
+          // console.log(state)
+          // console.log(response)
+          // commit('SET_TOKEN', data.token)
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
       })
     }
   }
