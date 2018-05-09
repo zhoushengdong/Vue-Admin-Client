@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getList(params) {
+export function fetchDataList(params) {
   return request({
     url: '/table/list',
     method: 'get',

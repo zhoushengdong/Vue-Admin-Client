@@ -1,4 +1,9 @@
+html, body {
+  height: 100%;
+}
+
 #app {
+  height: 100%;
   // 主体区域
   .main-container {
     min-height: 100%;

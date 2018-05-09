@@ -1,5 +1,5 @@
 <template>
-  <div style="background:#f0f2f5;margin-top: -20px;">
+  <div style="background:#f0f2f5;margin-top: -20px;height: 100%;">
     <div class="wscn-http404">
       <div class="pic-404">
         <img class="pic-404__parent" :src="img_404" alt="404">
@@ -38,10 +38,11 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+
 .wscn-http404 {
   position: relative;
   width: 1200px;
-  margin: 20px auto 60px;
+  margin: 20px auto 0px;
   padding: 0 100px;
   overflow: hidden;
   .pic-404 {

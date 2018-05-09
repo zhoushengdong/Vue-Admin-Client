@@ -9,7 +9,7 @@ const service = axios.create({
   timeout: 15000 // 请求超时时间
 })
 
-// request拦截器
+// request拦截器 => 请求前
 service.interceptors.request.use(config => {
   if (store.getters.token) {
     // config.headers['X-Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
@@ -21,7 +21,7 @@ service.interceptors.request.use(config => {
   Promise.reject(error)
 })
 
-// respone拦截器
+// respone拦截器 => 请求后
 service.interceptors.response.use(
   response => {
   /**
@@ -43,11 +43,11 @@ service.interceptors.response.use(
           type: 'warning'
         }).then(() => {
           store.dispatch('FedLogOut').then(() => {
-            location.reload()// 为了重新实例化vue-router对象 避免bug
+            location.reload() // 为了重新实例化vue-router对象 避免bug
           })
         })
       }
-      return Promise.reject('error')
+      return Promise.reject('request.js => error')
     } else {
       return response.data
     }

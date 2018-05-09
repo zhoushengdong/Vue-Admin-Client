@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="addData">添加</el-button>
+    <el-button type="primary" class="spacingMB" @click="addData">添加</el-button>
 
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+    <el-table :data="this.newslist" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='ID' width="95">
         <template slot-scope="scope">
           {{scope.$index}}
@@ -44,6 +44,7 @@
 <script>
 import { getList } from '@/api/table'
 import excel from '../excel/exportExcel';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -55,31 +56,39 @@ export default {
   },
   filters: {
     statusFilter(status) {
+      // 三种状态
       const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
+        1: 'success',
+        2: 'gray',
+        3: 'danger',
       }
       return statusMap[status]
     }
   },
   created() {
-    this.fetchData()
+    this.listLoading = true
+    // this.$store.dispatch('FetchDataList')
+    this.FetchDataList().then(() => {
+      this.listLoading = false
+      console.log(this.$store)
+    });
   },
   methods: {
-    fetchData() {
-      this.listLoading = true
-      getList(this.listQuery).then(response => {
-        console.log(response);
-        this.list = response.data.items
-        this.listLoading = false
-      })
-    },
     addData () {
-      // console.log(this.showForm);
       this.showForm = true
-    }
+    },
+    ...mapActions(['FetchDataList'])
   },
-  components: {excel}
+  components: {excel},
+  computed: {
+    ...mapGetters(['newslist'])
+  }
 }
 </script>
+
+<style scoped>
+  .spacingMB {
+    margin-bottom: 20px;
+  }
+</style>
+

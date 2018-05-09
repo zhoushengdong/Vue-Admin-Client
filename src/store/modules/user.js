@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/login'
-import { addData } from '@/api/table'
+import { addData, fetchDataList } from '@/api/table'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+// import { Promise } from 'mongoose';
 // import { Promise } from 'mongoose'
 // import { resolve } from 'url'
 // import { reject } from './C:/Users/Administrator/AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/async'
@@ -11,7 +12,8 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    newslist: []
   },
 
   mutations: {
@@ -26,6 +28,14 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_NEWSLIST: (state, newsList) => {
+      if (newsList.data.items.length > 1) {
+        state.newslist = newsList.data.items
+      } else {
+        state.newslist.push(newsList.data.items[0])
+      }
+      // console.log(state.newslist)
     }
   },
 
@@ -35,7 +45,7 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
-          console.log(response)
+          // console.log(response)
           const data = response.data
           setToken(data.token)
           commit('SET_TOKEN', data.token)
@@ -51,7 +61,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo(state.token).then(response => {
           console.log(response)
-          console.log(process.env.BASE_API)
+          // console.log(process.env.BASE_API)
           const data = response.data
           commit('SET_ROLES', data.role)
           commit('SET_NAME', data.name)
@@ -92,8 +102,23 @@ const user = {
         addData(param).then(response => {
           // console.log(state)
           // console.log(response)
-          // commit('SET_TOKEN', data.token)
-          resolve(response)
+          commit('SET_NEWSLIST', response)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 获取Table List数据
+    FetchDataList({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        fetchDataList().then(response => {
+          if (response.data.items.length !== 0) {
+            commit('SET_NEWSLIST', response)
+          }
+          // console.log(response)
+          resolve()
         }).catch(error => {
           reject(error)
         })

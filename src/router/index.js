@@ -79,7 +79,7 @@ export const constantRouterMap = [
       icon: 'excel'
     },
     children: [
-      { path: 'export-excel', component: _import('excel/exportExcel'), name: 'exportExcel', meta: { title: '数据管理', icon: 'form' }}
+      { path: 'export-excel', component: _import('excel/exportExcel'), name: 'exportExcel', meta: { title: '数据管理', icon: 'zfb' }}
     ]
   },
 
